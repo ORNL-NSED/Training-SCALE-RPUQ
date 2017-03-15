@@ -1,0 +1,28 @@
+=origen
+case{
+    title="u238 decay chain"
+    lib{
+        file="end7dec"
+    }%end lib
+    time{
+        units=years
+        t=[20L 1.0e1 1.0e9]
+    }%end time
+    mat{
+        iso=[u238=1.0 u235=0.0]
+        units=MOLES
+    }%end mat
+    print{
+        nuc{
+            units=[MOLES CURIES]
+        }
+    }%end print
+    save{
+        file="ft71f001"
+        steps=ALL
+    }%end save
+} %end case
+end
+=opus
+units=curies
+end

@@ -1,0 +1,82 @@
+=t-depl
+Based on Calvert Cliffs RCA benchmark
+v7-56
+'================================================================================
+read alias
+ $fuel 100 end
+ $gap  200 end
+ $clad 300 end
+ $cool 400 end
+end alias
+'================================================================================
+read composition
+ uo2 $fuel den=10.045 1 997 92235 3.038
+                          92234 0.027
+                          92236 0.014
+                          92238 96.921 end
+ n           $gap  den=0.00125 1 620 end
+ zirc2       $clad 1 620 end
+ h2o         $cool den=0.7332 0.999337 569.9 end
+ boron       $cool den=0.7332 0.000663 569.9 end
+end composition
+'================================================================================
+read celldata
+ latticecell squarepitch fueld= 0.9563 $fuel
+                          gapd= 0.9855 $gap
+                         cladd= 1.1176 $clad
+                         pitch= 1.4732 $cool end
+end celldata
+'================================================================================
+read burndata
+power=40 burn=30 nlib=1 end
+end burndata
+'================================================================================
+read depletion
+100
+end depletion
+'================================================================================
+read model
+Calvert Cliffs z = 165.22cm Assembly
+'================================================================================
+read parm
+ echo=yes
+ cmfd=yes xycmfd=2 inners=2 therm=yes therms=1
+ epsilon=1.0e-5 converge=mix
+ drawit=yes
+end parm
+'================================================================================
+read materials
+ mix=100  com="fuel (red)"      end
+ mix=300  com="clad (green)"    end
+ mix=400  com="cool (blue)"     end
+ mix=200  com="gap (yellow)"    end
+end materials
+'================================================================================
+read geom
+global unit 1
+  cylinder 100  0.47815
+  cylinder 200 0.49275
+  cylinder 300 0.5588
+  cuboid   400 4p0.7366
+  media 100 1 100
+  media 200 1 200 -100
+  media 300 1 300 -200
+  media 400 1 400 -300
+  boundary 400 4 4
+end geom
+'================================================================================
+read collapse
+40r1 16r2
+end collapse
+'================================================================================
+read homog
+ 500 all 100 end
+end homog
+'================================================================================
+end model
+'================================================================================
+end
+=shell
+cp xfile016 "${OUTDIR}/${BASENAME}.x16"
+mv _plot000000000000000000 "${OUTDIR}/${BASENAME}.000000000000000000.plt"
+end

@@ -1,0 +1,4 @@
+'hint: do uam_pb2_inp first and then just add perturb_xs=yes.
+=sampler
+
+end

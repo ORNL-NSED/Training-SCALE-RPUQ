@@ -1,0 +1,30 @@
+=origami
+
+  title="Operating History UQ"
+  options{ mtu=0.42 }    %0.42 MTU (initial)
+  libs=[ "w17x17" ]
+  fuelcomp{
+    uox(fuel){ enrich=4.5 }      %defines comp='fuel'
+    mix(1){ comps=[ fuel=100 ] } %comp=wt% pairs
+  }
+  hist[
+    %fuel declared to have 45.7 GWd/MTU with 1237 days of irradiation
+    %power in MW/MTU backed out as: 45.7*1000/(1237) = 36.94
+    %five years of decay since dishcharge
+    cycle{ power=36.94 burn=1237 nlib=16 down=0 }
+    cycle{ down=1826.25 }
+  ]
+  ngrp=[2e7 1e7 1e6 1e5] % 100 keV and higher 
+end
+
+'make opus create emission rate table
+'at discharge (position=2) on "assembly" f71
+=shell
+cp *.assm.f71 ft71f001
+end
+=opus
+data="ft71f001"
+nposition= 2 end
+typarams=nspe
+units=particles
+end

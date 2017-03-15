@@ -1,0 +1,20 @@
+'rn222_sampler.inp is a basic sampler template for
+'an ORIGEN followed by an OPUS
+=sampler
+
+read parameters
+'n_samples=100
+'force_run=no
+'run_cases=yes
+'perturb_decay=yes
+'perturb_yields=yes
+'perturb_xs=yes
+'perturb_geometry=yes
+end parameters
+
+read case[c1]
+sequence{PASTE_ORIGEN}sequence
+sequence{PASTE_OPUS}sequence
+end case
+
+end

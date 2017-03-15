@@ -1,0 +1,63 @@
+'hint: use shell to copy desired input to my.inp
+=shell
+cp "${INPDIR}/../../base_calcs/uam_pb2/uam_pb2_pin.mg_de.inp" "my.inp"
+end
+
+=sampler
+
+'hint: what do you want to perturb and how many perturbations?
+read parameters
+  n_samples = 100
+  run_cases=yes
+  force_run=no
+  library="v7-56"
+  perturb_xs=yes
+end parameters
+
+'hint: must have a corresponding shell to make "my.inp" exist.
+read case[c1]
+  import = "my.inp"
+end case
+
+'hint: saves the f71 (ORIGEN results file) for different responses
+read save
+  file="ft71f001"
+  name="f71"
+end save
+
+'hint: saves the x16 (TRITON nodal data) for different responses
+read save
+  file="xfile016"
+  name="x16"
+end save
+
+'hint: add nuclides of interest
+read response[conc]
+  type=origen_nuclides
+  nuclides = u235 pu239 end
+  mixture = 100
+end response
+
+'only finds first one
+read response[kinf0d]
+  type = grep
+  regexp = "k-eff = *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'in order to find second one we match time
+read response[kinf15d]
+  type = grep
+  regexp = "k-eff = *:scale.number: *Time=     15.00d"
+  regexp = "k-eff = *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'hint: include macro xs of interest
+read response[xs]
+  type = triton
+  data = sigma_absorption sigma_fission end
+  mixture = 100
+end response
+
+end

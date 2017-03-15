@@ -1,0 +1,75 @@
+'hint: See the 'power' variable below.
+=sampler
+
+read param
+  n_samples=100
+  perturb_geometry=yes
+  perturb_xs=no
+  perturb_decay=no
+  perturb_yields=no
+  force_run=no
+end param
+
+read case[c1]
+sequence=origami
+  title="Operating History UQ"
+  options{ mtu=0.42 }    %0.42 MTU (initial)
+  libs=[ "w17x17" ]
+  fuelcomp{
+    uox(fuel){ enrich=4.5 }      %defines comp='fuel'
+    mix(1){ comps=[ fuel=100 ] } %comp=wt% pairs
+  }
+  hist[
+    %fuel declared to have 45.7 GWd/MTU with 1237 days of irradiation
+    %power in MW/MTU backed out as: 45.7*1000/(1237) = 36.94
+    %five years of decay since dishcharge
+    cycle{ power=#{power} burn=1237 nlib=16 down=0 }
+    cycle{ down=1826.25 }
+  ]
+  ngrp=[2e7 1e7 1e6 1e5] %20 MeV, 10 MeV, 1 MeV, 100 keV
+end sequence
+
+'copy the results file we want to a standard name
+sequence=shell
+cp *.assm.f71 ft71f001
+end sequence
+
+'make opus create emission rate table
+'at discharge (position=2) on "assembly" f71 which only has two
+'positions, the last one being the assembly average
+sequence=opus
+data="ft71f001"
+nposition = 2 end
+typarams=nspe
+units=particles
+end sequence
+
+'Fill in the distribution below.
+read variable[power]
+distribution=normal
+'minimum=?
+'maximum=?
+'stddev=?
+'value=?
+end variable
+
+end case
+
+'high energy range
+'Note: the pipe (|) is critical to isolating this number in the output file!
+read response[hi]
+type=grep
+regexp=" 2.00e\+01 -- 1.00e\+01 \|   :scale.number:"
+regexp="\|   :scale.number:"
+regexp=":scale.number:"
+end response
+
+'mid energy range
+'read response[mid]
+'end response
+
+'low energy range
+'read response[low]
+'end response
+
+end

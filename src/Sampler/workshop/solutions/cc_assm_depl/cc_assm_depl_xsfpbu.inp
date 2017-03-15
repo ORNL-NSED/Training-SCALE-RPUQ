@@ -1,0 +1,137 @@
+'hint: Do the cc_assm_depl_xsfp case first. Use siren to
+'define the uncertain powers without modifying the input.
+=shell
+cp "${INPDIR}/../../base_calcs/cc/cc_assm.mg_de.inp" "my.inp"
+end
+
+=sampler
+
+'hint: what do you want to perturb and how many perturbations?
+read parameters
+  n_samples=60
+  force_run=no
+  run_cases=yes
+  library="v7-56"
+  perturb_xs=yes
+  perturb_yields=yes
+  perturb_geometry=yes
+end parameters
+
+'hint: must have a corresponding shell to make "my.inp" exist.
+read case[c1]
+  import = "my.inp"
+  read variable[bu_rand]
+    distribution=normal
+    value=1.0
+    stddev=0.015
+    maximum=1.045
+    minimum=0.955
+  end variable
+
+'did something like this to get power variables
+'powers=$($SCALE/bin/InputViewer ../../base_calcs/cc/cc_assm.mg_de.inp | grep power/value | grep -o '(.*)' | sed 's|(||g' | sed 's|)||g');
+'n=0; for f in $( echo $powers );
+'do
+'  n=$((n+1));
+'  echo read variable[pow$n]
+'  distribution=expression expression=\"$f*bu_rand\"
+'  siren=\"/tdepl/burndata/cycle/power/value[$n]\"
+'done
+    read variable[pow1] distribution=expression expression="28.54*bu_rand" siren="/tdepl/burndata/cycle/power/value[1]" end variable
+    read variable[pow2] distribution=expression expression="34.96*bu_rand" siren="/tdepl/burndata/cycle/power/value[2]" end variable
+    read variable[pow3] distribution=expression expression="34.75*bu_rand" siren="/tdepl/burndata/cycle/power/value[3]" end variable
+    read variable[pow4] distribution=expression expression="34.75*bu_rand" siren="/tdepl/burndata/cycle/power/value[4]" end variable
+    read variable[pow5] distribution=expression expression="34.54*bu_rand" siren="/tdepl/burndata/cycle/power/value[5]" end variable
+    read variable[pow6] distribution=expression expression="33.75*bu_rand" siren="/tdepl/burndata/cycle/power/value[6]" end variable
+    read variable[pow7] distribution=expression expression="33.91*bu_rand" siren="/tdepl/burndata/cycle/power/value[7]" end variable
+    read variable[pow8] distribution=expression expression="33.54*bu_rand" siren="/tdepl/burndata/cycle/power/value[8]" end variable
+    read variable[pow9] distribution=expression expression="33.38*bu_rand" siren="/tdepl/burndata/cycle/power/value[9]" end variable
+    read variable[pow10] distribution=expression expression="33.38*bu_rand" siren="/tdepl/burndata/cycle/power/value[10]" end variable
+    read variable[pow11] distribution=expression expression="34.38*bu_rand" siren="/tdepl/burndata/cycle/power/value[11]" end variable
+    read variable[pow12] distribution=expression expression="33.59*bu_rand" siren="/tdepl/burndata/cycle/power/value[12]" end variable
+    read variable[pow13] distribution=expression expression="32.96*bu_rand" siren="/tdepl/burndata/cycle/power/value[13]" end variable
+    read variable[pow14] distribution=expression expression="33.17*bu_rand" siren="/tdepl/burndata/cycle/power/value[14]" end variable
+    read variable[pow15] distribution=expression expression="31.33*bu_rand" siren="/tdepl/burndata/cycle/power/value[15]" end variable
+    read variable[pow16] distribution=expression expression="31.38*bu_rand" siren="/tdepl/burndata/cycle/power/value[16]" end variable
+    read variable[pow17] distribution=expression expression="37.52*bu_rand" siren="/tdepl/burndata/cycle/power/value[17]" end variable
+    read variable[pow18] distribution=expression expression="36.16*bu_rand" siren="/tdepl/burndata/cycle/power/value[18]" end variable
+    read variable[pow19] distribution=expression expression="25.31*bu_rand" siren="/tdepl/burndata/cycle/power/value[19]" end variable
+    read variable[pow20] distribution=expression expression="39.12*bu_rand" siren="/tdepl/burndata/cycle/power/value[20]" end variable
+    read variable[pow21] distribution=expression expression="39.07*bu_rand" siren="/tdepl/burndata/cycle/power/value[21]" end variable
+    read variable[pow22] distribution=expression expression="40.98*bu_rand" siren="/tdepl/burndata/cycle/power/value[22]" end variable
+    read variable[pow23] distribution=expression expression="37.42*bu_rand" siren="/tdepl/burndata/cycle/power/value[23]" end variable
+    read variable[pow24] distribution=expression expression="37.01*bu_rand" siren="/tdepl/burndata/cycle/power/value[24]" end variable
+    read variable[pow25] distribution=expression expression="36.16*bu_rand" siren="/tdepl/burndata/cycle/power/value[25]" end variable
+    read variable[pow26] distribution=expression expression="35.26*bu_rand" siren="/tdepl/burndata/cycle/power/value[26]" end variable
+    read variable[pow27] distribution=expression expression="34.80*bu_rand" siren="/tdepl/burndata/cycle/power/value[27]" end variable
+    read variable[pow28] distribution=expression expression="34.60*bu_rand" siren="/tdepl/burndata/cycle/power/value[28]" end variable
+    read variable[pow29] distribution=expression expression="35.76*bu_rand" siren="/tdepl/burndata/cycle/power/value[29]" end variable
+    read variable[pow30] distribution=expression expression="29.68*bu_rand" siren="/tdepl/burndata/cycle/power/value[30]" end variable
+    read variable[pow31] distribution=expression expression="29.45*bu_rand" siren="/tdepl/burndata/cycle/power/value[31]" end variable
+    read variable[pow32] distribution=expression expression="28.96*bu_rand" siren="/tdepl/burndata/cycle/power/value[32]" end variable
+    read variable[pow33] distribution=expression expression="28.51*bu_rand" siren="/tdepl/burndata/cycle/power/value[33]" end variable
+    read variable[pow34] distribution=expression expression="13.74*bu_rand" siren="/tdepl/burndata/cycle/power/value[34]" end variable
+    read variable[pow35] distribution=expression expression="14.32*bu_rand" siren="/tdepl/burndata/cycle/power/value[35]" end variable
+    read variable[pow36] distribution=expression expression="13.51*bu_rand" siren="/tdepl/burndata/cycle/power/value[36]" end variable
+    read variable[pow37] distribution=expression expression="23.55*bu_rand" siren="/tdepl/burndata/cycle/power/value[37]" end variable
+    read variable[pow38] distribution=expression expression="27.79*bu_rand" siren="/tdepl/burndata/cycle/power/value[38]" end variable
+    read variable[pow39] distribution=expression expression="27.56*bu_rand" siren="/tdepl/burndata/cycle/power/value[39]" end variable
+    read variable[pow40] distribution=expression expression="26.80*bu_rand" siren="/tdepl/burndata/cycle/power/value[40]" end variable
+    read variable[pow41] distribution=expression expression="27.34*bu_rand" siren="/tdepl/burndata/cycle/power/value[41]" end variable
+    read variable[pow42] distribution=expression expression="26.93*bu_rand" siren="/tdepl/burndata/cycle/power/value[42]" end variable
+    read variable[pow43] distribution=expression expression="27.11*bu_rand" siren="/tdepl/burndata/cycle/power/value[43]" end variable
+    read variable[pow44] distribution=expression expression="21.98*bu_rand" siren="/tdepl/burndata/cycle/power/value[44]" end variable
+    read variable[pow45] distribution=expression expression="23.18*bu_rand" siren="/tdepl/burndata/cycle/power/value[45]" end variable
+    read variable[pow46] distribution=expression expression="23.18*bu_rand" siren="/tdepl/burndata/cycle/power/value[46]" end variable
+    read variable[pow47] distribution=expression expression="23.14*bu_rand" siren="/tdepl/burndata/cycle/power/value[47]" end variable
+    read variable[pow48] distribution=expression expression="22.80*bu_rand" siren="/tdepl/burndata/cycle/power/value[48]" end variable
+    read variable[pow49] distribution=expression expression="22.85*bu_rand" siren="/tdepl/burndata/cycle/power/value[49]" end variable
+    read variable[pow50] distribution=expression expression="22.75*bu_rand" siren="/tdepl/burndata/cycle/power/value[50]" end variable
+    read variable[pow51] distribution=expression expression="19.56*bu_rand" siren="/tdepl/burndata/cycle/power/value[51]" end variable
+    read variable[pow52] distribution=expression expression="20.96*bu_rand" siren="/tdepl/burndata/cycle/power/value[52]" end variable
+    read variable[pow53] distribution=expression expression="22.94*bu_rand" siren="/tdepl/burndata/cycle/power/value[53]" end variable
+    read variable[pow54] distribution=expression expression="23.14*bu_rand" siren="/tdepl/burndata/cycle/power/value[54]" end variable
+    read variable[pow55] distribution=expression expression="23.18*bu_rand" siren="/tdepl/burndata/cycle/power/value[55]" end variable
+    read variable[pow56] distribution=expression expression="21.69*bu_rand" siren="/tdepl/burndata/cycle/power/value[56]" end variable
+    read variable[pow57] distribution=expression expression="23.52*bu_rand" siren="/tdepl/burndata/cycle/power/value[57]" end variable
+    read variable[pow58] distribution=expression expression="19.32*bu_rand" siren="/tdepl/burndata/cycle/power/value[58]" end variable
+    read variable[pow59] distribution=expression expression="0.010*bu_rand" siren="/tdepl/burndata/cycle/power/value[59]" end variable
+sequence=shell
+echo bu_rand=#{bu_rand}
+end sequence
+end case
+
+'hint: saves the f71 (ORIGEN results file) for different responses
+read save
+  file="ft71f001"
+  name="f71"
+end save
+
+'hint: saves the x16 (TRITON nodal data) for different responses
+read save
+  file="xfile016"
+  name="x16"
+end save
+
+'hint: add addl. nuclides of interest
+read response[conc]
+  type=origen_nuclides
+  nuclides = u235 pu239 end
+  mixture = 100
+end response
+
+'hint: add addl. macro xs of interest
+read response[xs]
+  type = triton
+  data = sigma_absorption sigma_fission end
+  mixture = 100
+end response
+
+'hint: add bu_rand
+read response[inp]
+    type=variables
+    data = bu_rand end
+end response
+
+end
+

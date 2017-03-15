@@ -1,0 +1,75 @@
+=sampler
+
+read parameters
+  n_samples=100
+  force_run=yes
+  run_cases=yes
+  perturb_decay=yes
+  perturb_yields=no
+  perturb_xs=no
+  perturb_geometry=yes
+end parameters
+
+read case[c1]
+sequence=origen
+case{
+    title="u238 decay chain"
+    lib{
+        file="end7dec"
+    }
+    time{
+        units=years
+        t=[20L 1.0e1 1.0e9]
+    }
+    mat{
+        iso=[u238=#{u238} u235=#{u235}]
+        units=MOLES
+    }
+    print{
+        nuc{
+            units=[MOLES CURIES]
+        }
+    }
+    save{
+        file="ft71f001"
+        steps=ALL
+    }
+}
+end sequence
+sequence=opus
+units=curies
+end sequence
+
+end case
+
+'define u238 between 0.5 to 1.5 moles
+read variable[u238]
+distribution=uniform
+value=1.0
+minimum=0.5
+maximum=1.5
+cases=c1 end
+end variable
+
+'define u235 as 0.7% of u238
+read variable[u235]
+distribution=expression
+expression="0.007*u238"
+cases=c1 end
+end variable
+
+'access ft71f001 file
+read response[moles]
+type=origen_nuclides
+mixture=1
+nuclides=rn-222 end
+end response
+
+'plot file response
+read response[curies]
+type=opus_plt
+ndataset=0
+nuclides=rn-222 total end
+end response
+
+end

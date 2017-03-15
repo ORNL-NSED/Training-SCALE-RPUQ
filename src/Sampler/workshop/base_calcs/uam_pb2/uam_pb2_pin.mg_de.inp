@@ -1,0 +1,77 @@
+=t-depl
+UAM Phase 1-1 PB2 HFP
+v7-56
+' Data taken from:
+'        Benchmark for Uncertainty Analysis in Modeling (UAM)
+'        for Design, Operation and Safety Analyses of LWRs,
+'        Nuclear Energy Agency, 2007.
+'===============================================================================
+read comp
+  uo2    1 den=10.32 1 900 92235 2.93
+                           92234 0.0261
+                           92236 0.0135
+                           92238 97.0304 end
+  he    11 den=4.9559E-4 1 700 end
+  zirc2 21 den=5.678     1 630 end
+  h2o   31 den=0.4577    1 560 end
+end comp
+'===============================================================================
+read celldata
+  latticecell squarepitch  fuelr=0.60579  1
+                            gapr=0.62103 11
+                           cladr=0.71501 21
+                          hpitch=0.9375  31 end
+end celldata
+'===============================================================================
+read burndata
+power=25 burn=30 nlib=1 end
+end burndata
+'===============================================================================
+read depletion
+1
+end depletion
+'===============================================================================
+read model
+NEWT Geometry
+'===============================================================================
+read parm
+ echo=yes drawit=yes sn=10
+ epsilon=-3.0e-5
+end parm
+'===============================================================================
+read materials
+  mix= 1 pn=2 com='2.93% UO2'   end
+  mix=21 pn=2 com='Zirc2 Clad'  end
+  mix=31 pn=2 com='coolant'     end
+  mix=11 pn=0 com='Helium gap'  end
+end materials
+'===============================================================================
+read geom
+ global unit 1
+  cylinder  1 0.60579 sides=32 chord +x=0 chord +y=0
+  cylinder 11 0.62103 sides=32 chord +x=0 chord +y=0
+  cylinder 21 0.71501 sides=32 chord +x=0 chord +y=0
+  cylinder 25 0.78    sides=32 chord +x=0 chord +y=0
+  cuboid   31 0.9375 0 0.9375 0
+  media   1 1  1
+  media  11 1 11 -1
+  media  21 1 21 -11
+  media  31 1 31 -21
+  boundary 31 4 4
+end geom
+'===============================================================================
+read collapse
+40r1 16r2
+end collapse
+'================================================================================
+read homog
+ 500 all 1 end
+end homog
+'===============================================================================
+end model
+'===============================================================================
+end
+=shell
+cp xfile016 "${OUTDIR}/${BASENAME}.x16"
+mv _plot000000000000000000 "${OUTDIR}/${BASENAME}.000000000000000000.plt"
+end

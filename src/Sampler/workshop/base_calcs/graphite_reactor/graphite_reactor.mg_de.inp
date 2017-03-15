@@ -1,0 +1,89 @@
+=t-depl
+ORNL Simple Graphite Reactor
+v7-56
+'================================================================================
+read comp
+  h2o      1 den=0.991  1 332.0 end
+  al       2 den=2.7    1 332.0 end
+  u        3 den=18.068 1 332.0
+                                92234   0.0050
+                                92235   0.7116
+                                92236   0.0006
+                                92238  99.2828 end
+  al       4 den=2.7    1 332.0 end
+  h2o      5 den=0.991  1 332.0 end
+  al       6 den=2.7    1 332.0 end
+  graphite 7 den=1.7    1 973.0 end
+end comp
+'================================================================================
+read cell
+multiregion cylindrical right=white end
+ 1  0.3937
+ 2  0.53721
+ 3  1.72212
+ 4  1.83388
+ 5  2.02946
+ 6  2.19456
+ 7 12.00015 end zone
+end cell
+'================================================================================
+read depletion
+ 3
+end depletion
+'================================================================================
+read burndata
+power=15 burn=30 nlib=1 end
+end burndata
+'================================================================================
+read model
+'===============================================================================
+read materials
+ mix=1  com="mod" end
+ mix=2  com="struct" end
+ mix=3  com="fuel" end
+ mix=4  com="struct" end
+ mix=5  com="mod" end
+ mix=6  com="struct" end
+ mix=7  com="graphite" end
+end materials
+'================================================================================
+read geometry
+global unit 1
+ cylinder 1 0.3937
+ cylinder 2 0.53721
+ cylinder 3 1.72212
+ cylinder 4 1.83388
+ cylinder 5 2.02946
+ cylinder 6 2.19456
+ cylinder 7 12.00015
+ cuboid   8 4p12.00015
+ media 1 1 1
+ media 2 1 2 -1
+ media 3 1 3 -2
+ media 4 1 4 -3
+ media 5 1 5 -4
+ media 6 1 6 -5
+ media 7 1 7 -6
+ media 0 1 8 -7
+ boundary 8 4 4
+end geometry
+'================================================================================
+read bounds
+ all=refl
+end bounds
+'================================================================================
+read collapse
+40r1 16r2
+end collapse
+'================================================================================
+read homog
+ 500 all 3 end
+end homog
+'================================================================================
+end model
+'================================================================================
+end
+=shell
+cp xfile016 "${OUTDIR}/${BASENAME}.x16"
+mv _plot000000000000000000 "${OUTDIR}/${BASENAME}.000000000000000000.plt"
+end
