@@ -1,0 +1,153 @@
+=shell
+cp "${INPDIR}/hack.inp" hack.inp
+end
+
+=sampler
+
+read parameters
+  n_samples=5
+  perturb_decay=yes
+  library="v7-56"
+  run_cases=yes
+  force_run=no
+end parameters
+
+read case[works]
+  import="hack.inp"
+
+sequence=t-depl parm=bonami
+Simple triton calculation to demonstrate how to get uncertain decay data in
+v7-56
+'===============================================================================
+read comp
+  uo2    1 den=10.32 1 900 92235 2.93
+                           92234 0.0261
+                           92236 0.0135
+                           92238 97.0304 end
+  he    11 den=4.9559E-4 1 700 end
+  zirc2 21 den=5.678     1 630 end
+  h2o   31 den=0.4577    1 560 end
+end comp
+'===============================================================================
+read celldata
+  latticecell squarepitch  fuelr=0.60579  1
+                            gapr=0.62103 11
+                           cladr=0.71501 21
+                          hpitch=0.9375  31 end
+end celldata
+'===============================================================================
+read burndata
+power=25 burn=30 nlib=1 down=0.1 end
+end burndata
+'===============================================================================
+read depletion
+1
+end depletion
+'===============================================================================
+read model
+NEWT Geometry
+'===============================================================================
+read parm
+ cmfd=yes xycmfd=2 inners=2 therm=yes therms=1
+ epsilon=1.0e-1 converge=mix sn=2
+end parm
+'===============================================================================
+read materials
+  mix= 1 pn=0 com='2.93% UO2'   end
+  mix=21 pn=0 com='Zirc2 Clad'  end
+  mix=31 pn=0 com='coolant'     end
+  mix=11 pn=0 com='Helium gap'  end
+end materials
+'===============================================================================
+read geom
+ global unit 1
+  cylinder  1 0.60579 sides=12 chord +x=0 chord +y=0
+  cylinder 11 0.62103 sides=12 chord +x=0 chord +y=0
+  cylinder 21 0.71501 sides=12 chord +x=0 chord +y=0
+  cylinder 25 0.78    sides=12 chord +x=0 chord +y=0
+  cuboid   31 0.9375 0 0.9375 0
+  media   1 1  1
+  media  11 1 11 -1
+  media  21 1 21 -11
+  media  31 1 31 -21
+  boundary 31 4 4
+end geom
+'===============================================================================
+end model
+'===============================================================================
+end sequence
+
+end case
+
+read case[doesnot]
+sequence=t-depl parm=bonami
+Simple triton calculation to demonstrate how to get uncertain decay data in
+v7-56
+'===============================================================================
+read comp
+  uo2    1 den=10.32 1 900 92235 2.93
+                           92234 0.0261
+                           92236 0.0135
+                           92238 97.0304 end
+  he    11 den=4.9559E-4 1 700 end
+  zirc2 21 den=5.678     1 630 end
+  h2o   31 den=0.4577    1 560 end
+end comp
+'===============================================================================
+read celldata
+  latticecell squarepitch  fuelr=0.60579  1
+                            gapr=0.62103 11
+                           cladr=0.71501 21
+                          hpitch=0.9375  31 end
+end celldata
+'===============================================================================
+read burndata
+power=25 burn=30 nlib=1 down=0.1 end
+end burndata
+'===============================================================================
+read depletion
+1
+end depletion
+'===============================================================================
+read model
+NEWT Geometry
+'===============================================================================
+read parm
+ cmfd=yes xycmfd=2 inners=2 therm=yes therms=1
+ epsilon=1.0e-1 converge=mix sn=2
+end parm
+'===============================================================================
+read materials
+  mix= 1 pn=0 com='2.93% UO2'   end
+  mix=21 pn=0 com='Zirc2 Clad'  end
+  mix=31 pn=0 com='coolant'     end
+  mix=11 pn=0 com='Helium gap'  end
+end materials
+'===============================================================================
+read geom
+ global unit 1
+  cylinder  1 0.60579 sides=12 chord +x=0 chord +y=0
+  cylinder 11 0.62103 sides=12 chord +x=0 chord +y=0
+  cylinder 21 0.71501 sides=12 chord +x=0 chord +y=0
+  cylinder 25 0.78    sides=12 chord +x=0 chord +y=0
+  cuboid   31 0.9375 0 0.9375 0
+  media   1 1  1
+  media  11 1 11 -1
+  media  21 1 21 -11
+  media  31 1 31 -21
+  boundary 31 4 4
+end geom
+'===============================================================================
+end model
+'===============================================================================
+end sequence
+end case
+
+read response[conc]
+  type=origen_nuclides
+  nuclides = xe135 end
+  mixture = 1
+end response
+
+end
+

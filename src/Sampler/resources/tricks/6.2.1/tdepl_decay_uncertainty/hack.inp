@@ -1,0 +1,38 @@
+'SCALE 6.2.1 hack to get perturbed decay data into transport/depletion
+'-------------------------------------------------------------------------
+=csas-mg  parm=bonami
+Fake csas-mg to get an ampx lib
+v7-56
+read composition
+uranium  1 den=10.2  1  1200  92235 5.0 92238 95.0  end
+end composition
+read celldata
+  infhommedium 1  end
+end celldata
+end
+'-------------------------------------------------------------------------
+'origen_filenames
+'17    yields              17
+'27    decay               27
+'21    end7dec             21
+'74    jeff252g            74
+'75    jeff56g             75
+'80    jeff238g            80
+=couple
+Fake couple to get transition library
+
+0$$ a3 75 21 4 33 e
+1$$ a4 1 a6 1 a13 1 e
+t
+done
+end
+'-------------------------------------------------------------------------
+=shell
+mv ft33f001 transition.def
+end
+
+'end hack (we need transition.def with perturbed end7dec inside)
+'-------------------------------------------------------------------------
+
+
+
