@@ -30,7 +30,7 @@ sequence=origami
 end sequence
 
 sequence=shell
-cp *.assm.f71 ft71f001
+cp ${BASENAME}.assm.f71 ft71f001
 end sequence
 
 'make opus create emission rate table
