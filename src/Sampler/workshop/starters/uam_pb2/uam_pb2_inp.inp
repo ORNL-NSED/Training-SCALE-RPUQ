@@ -40,7 +40,7 @@ value=0.01524
 'stddev=?
 end variable
 
-'clad thickness: nominal 0.2225 cm
+'clad thickness: nominal 0.09398 cm
 '3*stddev: 0.004 cm
 read variable[cladt]
 distribution=normal
