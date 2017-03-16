@@ -1,7 +1,7 @@
 'hint: Do the cc_assm_depl_xsfp case first. Use siren to
 'define the uncertain powers without modifying the input.
 =shell
-cp "${INPDIR}/../../base_calcs/cc/cc_assm.mg_de.inp" "my.inp"
+cp "${INPDIR}/../../base_calcs/cc_assm_depl.mg_de.inp" "my.inp"
 end
 
 =sampler
@@ -29,7 +29,7 @@ read case[c1]
   end variable
 
 'did something like this to get power variables
-'powers=$($SCALE/bin/InputViewer ../../base_calcs/cc/cc_assm.mg_de.inp | grep power/value | grep -o '(.*)' | sed 's|(||g' | sed 's|)||g');
+'powers=$($SCALE/bin/InputViewer ../../base_calcs/cc_assm_depl.mg_de.inp | grep power/value | grep -o '(.*)' | sed 's|(||g' | sed 's|)||g');
 'n=0; for f in $( echo $powers );
 'do
 '  n=$((n+1));

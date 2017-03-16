@@ -1,0 +1,120 @@
+'hint: Paste in the full input file below and create placeholder
+'variables based on the distributions below.
+=sampler
+
+read parameters
+ n_samples=2
+ force_run=no
+ run_cases=no
+ perturb_geometry=yes
+ perturb_xs=no
+ library="v7-56"
+end parameters
+
+read case[c1]
+'
+'PASTE here uam_pb2_pin.mg_de.inp
+'and wrap each sequence in sequence{}sequence
+'
+
+'
+'hint: Fill in all the distribution information below.
+'
+'fuel Pellet radius: nominal =  0.60579 cm
+'                   3*stddev = 0.00065 cm;
+read variable[fuelr]
+distribution=normal
+value=0.60579
+'minimum=?
+'maximum=?
+'stddev=?
+end variable
+
+'gap thickness: nominal = 0.62103 - 0.60579 = 0.01524 cm
+'             3*stddev = 0.004 cm;
+read variable[gapt]
+distribution=normal
+value=0.01524
+'minimum=?
+'maximum=?
+'stddev=?
+end variable
+
+'clad thickness: nominal 0.2225 cm
+'3*stddev: 0.004 cm
+read variable[cladt]
+distribution=normal
+value=0.09398
+'minimum=?
+'maximum=?
+'stddev=?
+end variable
+
+'now need radii for actual input
+read variable[gapr]
+distribution=expression
+expression="?"
+end variable
+
+read variable[cladr]
+distribution=expression
+expression="?"
+end variable
+
+'density multipler so don't lose mass
+'when modifying the pellet radius
+read variable[dens_mult]
+distribution=expression
+expression="?"
+end variable
+
+read variable[den]
+distribution=expression
+expression='10.32*dens_mult'
+end variable
+
+end case
+
+'hint: saves the f71 (ORIGEN results file) for different responses
+read save
+  file="ft71f001"
+  name="f71"
+end save
+
+'hint: saves the x16 (TRITON nodal data) for different responses
+read save
+  file="xfile016"
+  name="x16"
+end save
+
+'hint: add nuclides of interest
+read response[conc]
+  type=origen_nuclides
+  nuclides = u235 pu239 end
+  mixture = 100
+end response
+
+'only finds first one
+read response[kinf0d]
+  type = grep
+  regexp = "k-eff = *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'in order to find second one we match time
+read response[kinf15d]
+  type = grep
+  regexp = "k-eff = *:scale.number: *Time=     15.00d"
+  regexp = "k-eff = *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'hint: include macro xs of interest
+read response[xs]
+  type = triton
+  data = sigma_absorption sigma_fission end
+  mixture = 100
+end response
+
+end
+

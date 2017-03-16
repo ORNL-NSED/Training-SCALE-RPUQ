@@ -1,17 +1,17 @@
+'hint: See the 'power' variable below.
 =sampler
 
 read param
-n_samples=100
-perturb_geometry=yes
-perturb_xs=no
-perturb_decay=no
-perturb_yields=no
-force_run=no
+  n_samples=100
+  perturb_geometry=yes
+  perturb_xs=no
+  perturb_decay=no
+  perturb_yields=no
+  force_run=no
 end param
 
 read case[c1]
 sequence=origami
-
   title="Operating History UQ"
   options{ mtu=0.42 }    %0.42 MTU (initial)
   libs=[ "w17x17" ]
@@ -29,37 +29,34 @@ sequence=origami
   ngrp=[2e7 1e7 1e6 1e5] %20 MeV, 10 MeV, 1 MeV, 100 keV
 end sequence
 
+'copy the results file we want to a standard name
 sequence=shell
 cp *.assm.f71 ft71f001
 end sequence
 
 'make opus create emission rate table
-'at discharge (position=2) on "assembly" f71
+'at discharge (position=2) on "assembly" f71 which only has two
+'positions, the last one being the assembly average
 sequence=opus
 data="ft71f001"
-nposition= 2 end
+nposition = 2 end
 typarams=nspe
 units=particles
 end sequence
 
-'2-sigma of 3% uncertainty in burnup converted into power variable
-'1-sigma=0.5541 (1.5%)
-'2-sigma=1.1082
-'minimum=36.94-3*0.5541
-'maximum=36.94+3*0.5541
-'value=36.94
-'stddev=0.5541
+'Fill in the distribution below.
 read variable[power]
 distribution=normal
-minimum=35.2777
-maximum=38.6023
-stddev=0.5541
-value=36.94
+'minimum=?
+'maximum=?
+'stddev=?
+'value=?
 end variable
 
 end case
 
-'the pipe (|) is critical to isolating this number
+'high energy range
+'Note: the pipe (|) is critical to isolating this number in the output file!
 read response[hi]
 type=grep
 regexp=" 2.00e\+01 -- 1.00e\+01 \|   :scale.number:"
@@ -67,21 +64,12 @@ regexp="\|   :scale.number:"
 regexp=":scale.number:"
 end response
 
-'the pipe (|) is critical to isolating this number
-read response[mid]
-type=grep
-regexp=" 1.00e\+01 -- 1.00e\+00 \|   :scale.number:"
-regexp="\|   :scale.number:"
-regexp=":scale.number:"
-end response
+'mid energy range
+'read response[mid]
+'end response
 
-'the pipe (|) is critical to isolating this number
-read response[low]
-type=grep
-regexp=" 1.00e\+00 -- 1.00e\-01 \|   :scale.number:"
-regexp="\|   :scale.number:"
-regexp=":scale.number:"
-end response
-
+'low energy range
+'read response[low]
+'end response
 
 end

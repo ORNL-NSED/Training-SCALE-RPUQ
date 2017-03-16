@@ -5,13 +5,66 @@ read parameters
  perturb_geometry=yes
  perturb_xs=no
  library="v7-56"
+ run_cases=yes
  force_run=no
 end parameters
 
 'hint: Paste in the full input file below and create placeholder
 'variables based on the distributions below.
 read case[c1]
-sequence={PASTE here uam_pb2_pin.mg_de.inp}
+sequence=t-newt
+UAM Phase 1-1 HFP
+v7-252
+' Data taken from:
+'        Benchmark for Uncertainty Analysis in Modeling (UAM)
+'        for Design, Operation and Safety Analyses of LWRs,
+'        Nuclear Energy Agency, 2007.
+read comp
+  uo2    1 den=#{den} 1 900 92235 2.93
+                           92234 0.0261
+                           92236 0.0135
+                           92238 97.0304 end
+  he    11 den=4.9559E-4 1 700 end
+  zirc2 21 den=5.678     1 630 end
+  h2o   31 den=0.4577    1 560 end
+end comp
+read celldata
+  latticecell squarepitch  fuelr=#{fuelr}  1
+                            gapr=#{gapr} 11
+                           cladr=#{cladr} 21
+                          hpitch=0.9375  31 end
+end celldata
+read model
+NEWT Geometry
+read parm
+ echo=yes drawit=yes sn=10
+ epsilon=-3.0e-5
+end parm
+read materials
+  mix= 1 pn=2 com='2.93% UO2'   end
+  mix=21 pn=2 com='Zirc2 Clad'  end
+  mix=31 pn=2 com='coolant'     end
+  mix=11 pn=0 com='Helium gap'  end
+end materials
+read geom
+ global unit 1
+  cylinder  1 #{fuelr} sides=32 chord +x=0 chord +y=0
+  cylinder 11 #{gapr} sides=32 chord +x=0 chord +y=0
+  cylinder 21 #{cladr} sides=32 chord +x=0 chord +y=0
+  cylinder 25 0.78    sides=32 chord +x=0 chord +y=0
+  cuboid   31 0.9375 0 0.9375 0
+  media   1 1  1
+  media  11 1 11 -1
+  media  21 1 21 -11
+  media  31 1 31 -21
+  boundary 31 4 4
+end geom
+end model
+end sequence
+
+sequence=shell
+cp xfile016 "${OUTDIR}/${BASENAME}.x16"
+mv _plot000000000000000000 "${OUTDIR}/${BASENAME}.000000000000000000.plt"
 end sequence
 
 '
@@ -22,9 +75,9 @@ end sequence
 read variable[fuelr]
 distribution=normal
 value=0.60579
-'minimum=?
-'maximum=?
-'stddev=?
+minimum=0.60514
+maximum=0.60644
+stddev=0.000217
 end variable
 
 'gap thickness: nominal = 0.62103 - 0.60579 = 0.01524 cm
@@ -32,9 +85,9 @@ end variable
 read variable[gapt]
 distribution=normal
 value=0.01524
-'minimum=?
-'maximum=?
-'stddev=?
+minimum=0.01124
+maximum=0.01924
+stddev=0.00133
 end variable
 
 'clad thickness: nominal 0.2225 cm
@@ -42,27 +95,29 @@ end variable
 read variable[cladt]
 distribution=normal
 value=0.09398
-'minimum=?
-'maximum=?
-'stddev=?
+minimum=0.08998
+maximum=0.09798
+stddev=0.00133
 end variable
 
 'now need radii for actual input
+'1. gap
 read variable[gapr]
 distribution=expression
-expression="?"
+expression="fuelr+gapt"
 end variable
 
+'2. clad
 read variable[cladr]
 distribution=expression
-expression="?"
+expression="gapr+cladt"
 end variable
 
-'density multipler so don't lose mass
+'determine density multipler so don't lose mass
 'when modifying the pellet radius
 read variable[dens_mult]
 distribution=expression
-expression="?"
+expression="(0.60579^2)/(fuelr^2)"
 end variable
 
 read variable[den]
@@ -114,3 +169,4 @@ read response[xs]
 end response
 
 end
+

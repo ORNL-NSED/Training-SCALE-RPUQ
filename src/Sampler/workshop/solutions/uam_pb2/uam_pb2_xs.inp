@@ -1,6 +1,6 @@
 'hint: use shell to copy desired input to my.inp
 =shell
-cp "${INPDIR}/../../base_calcs/uam_pb2/uam_pb2_pin.mg_de.inp" "my.inp"
+cp "${INPDIR}/../../base_calcs/uam_pb2/uam_pb2.mg_de.inp" "my.inp"
 end
 
 =sampler

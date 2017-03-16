@@ -1,17 +1,13 @@
 'hint: use shell to copy desired input to my.inp
 =shell
-cp "${INPDIR}/../../base_calcs/cc/cc.mg_de.inp" "my.inp"
+cp "${INPDIR}/../../base_calcs/uam_pb2/uam_pb2.mg_de.inp" "my.inp"
 end
 
 =sampler
 
 'hint: what do you want to perturb and how many perturbations?
 read parameters
-  n_samples = 100
-  run_cases=yes
-  force_run=no
-  library="v7-56"
-  perturb_xs=yes
+
 end parameters
 
 'hint: must have a corresponding shell to make "my.inp" exist.
