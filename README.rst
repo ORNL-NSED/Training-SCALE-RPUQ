@@ -6,3 +6,7 @@ The purpose of this repository is to manage the inputs and outputs for the SCALE
 Here are the materials distributed by course.
 
 - 2017 OECD/NEA March 12-17, Paris [`2017NEA <https://github.com/wawiesel/Training-SCALE-RPUQ/releases/tag/2017NEA>`_]
+
+Here are additional tricks that are necessary for certain versions of SCALE.
+
+- how to get TRITON to use perturbed decay libraries [`6.2.1 <https://github.com/wawiesel/Training-SCALE-RPUQ/tree/master/src/Sampler/resources/tricks/6.2.1/tdepl_decay_uncertainty>`_] 
