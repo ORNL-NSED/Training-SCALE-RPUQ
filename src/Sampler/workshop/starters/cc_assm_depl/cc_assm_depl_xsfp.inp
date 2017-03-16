@@ -1,0 +1,45 @@
+'hint: Do the xs-only perturbation first. Adding fission
+'yield uncertainty is a one line addition in the parameters block.
+=shell
+cp "${INPDIR}/../../base_calcs/cc_assm_depl/cc_assm_depl.mg_de.inp" "my.inp"
+end
+
+=sampler
+
+'hint: what do you want to perturb and how many perturbations?
+read parameters
+  perturb_yields=yes
+end parameters
+
+'hint: must have a corresponding shell to make "my.inp" exist.
+read case[c1]
+  import = "my.inp"
+end case
+
+'hint: saves the f71 (ORIGEN results file) for different responses
+read save
+  file="ft71f001"
+  name="f71"
+end save
+
+'hint: saves the x16 (TRITON nodal data) for different responses
+read save
+  file="xfile016"
+  name="x16"
+end save
+
+'hint: add addl. nuclides of interest
+read response[conc]
+  type=origen_nuclides
+  nuclides = u235 pu239 end
+  mixture = 100
+end response
+
+'hint: add addl. macro xs of interest
+read response[xs]
+  type = triton
+  data = sigma_absorption sigma_fission end
+  mixture = 100
+end response
+
+end

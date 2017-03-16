@@ -1,10 +1,9 @@
-'hint: do uam_pb2_inp version first and then just add perturb_xs=yes
 =sampler
 
 read parameters
  n_samples=100
  perturb_geometry=yes
- perturb_xs=yes
+ perturb_xs=no
  library="v7-56"
  run_cases=yes
  force_run=no
@@ -13,13 +12,14 @@ end parameters
 'hint: Paste in the full input file below and create placeholder
 'variables based on the distributions below.
 read case[c1]
-sequence=t-newt
-UAM Phase 1-1 HFP
-v7-252
+sequence=t-depl
+UAM Phase 1-1 PB2 HFP
+v7-56
 ' Data taken from:
 '        Benchmark for Uncertainty Analysis in Modeling (UAM)
 '        for Design, Operation and Safety Analyses of LWRs,
 '        Nuclear Energy Agency, 2007.
+'===============================================================================
 read comp
   uo2    1 den=#{den} 1 900 92235 2.93
                            92234 0.0261
@@ -29,24 +29,37 @@ read comp
   zirc2 21 den=5.678     1 630 end
   h2o   31 den=0.4577    1 560 end
 end comp
+'===============================================================================
 read celldata
   latticecell squarepitch  fuelr=#{fuelr}  1
                             gapr=#{gapr} 11
                            cladr=#{cladr} 21
                           hpitch=0.9375  31 end
 end celldata
+'===============================================================================
+read burndata
+power=25 burn=30 nlib=1 end
+end burndata
+'===============================================================================
+read depletion
+1
+end depletion
+'===============================================================================
 read model
 NEWT Geometry
+'===============================================================================
 read parm
  echo=yes drawit=yes sn=10
  epsilon=-3.0e-5
 end parm
+'===============================================================================
 read materials
   mix= 1 pn=2 com='2.93% UO2'   end
   mix=21 pn=2 com='Zirc2 Clad'  end
   mix=31 pn=2 com='coolant'     end
   mix=11 pn=0 com='Helium gap'  end
 end materials
+'===============================================================================
 read geom
  global unit 1
   cylinder  1 #{fuelr} sides=32 chord +x=0 chord +y=0
@@ -60,14 +73,22 @@ read geom
   media  31 1 31 -21
   boundary 31 4 4
 end geom
+'===============================================================================
+read collapse
+40r1 16r2
+end collapse
+'================================================================================
+read homog
+ 500 all 1 end
+end homog
+'===============================================================================
 end model
+'===============================================================================
 end sequence
-
 sequence=shell
 cp xfile016 "${OUTDIR}/${BASENAME}.x16"
 mv _plot000000000000000000 "${OUTDIR}/${BASENAME}.000000000000000000.plt"
 end sequence
-
 '
 'hint: Fill in all the distribution information below.
 '
@@ -170,3 +191,4 @@ read response[xs]
 end response
 
 end
+
