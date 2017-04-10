@@ -1,0 +1,25 @@
+=shell
+    cp ${INPDIR}/burst.inp burst.inp
+end
+
+=%sampler
+
+read parameters
+  n_samples = 1000
+  perturb_yields = yes
+  perturb_decay = yes
+  perturb_xs = yes
+end parameters
+
+read case[heat]
+    import="burst.inp"
+end case
+
+read response[heat]
+  type=opus_plt
+  ndataset=0
+  nuclides=total end
+end response
+
+end
+

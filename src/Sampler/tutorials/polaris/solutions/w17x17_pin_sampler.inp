@@ -1,0 +1,46 @@
+=shell
+cp ${INPDIR}/w17x17_pin.inp w17x17_pin.inp
+end
+
+=%sampler
+
+read parameters
+  n_samples = 100
+  perturb_xs = yes
+  force_run = no
+  run_cases = yes
+  library = "v7-56"
+end parameters
+
+read case[c1]
+    import="w17x17_pin.inp"
+'Linux-specific shell command!
+    sequence=shell
+        grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' *nu' | tail -n 1 | awk '{print "diff1 = ",$4}'
+        grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' *nu' | tail -n 1 | awk '{print "diff2 = ",$4}'
+    end sequence
+end case
+
+read response[kinf]
+  type = grep
+  regexp = "k-eff = *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+read response[diff1]
+  type = grep
+  regexp = "diff1 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+read response[diff2]
+  type = grep
+  regexp = "diff2 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+end
+
+

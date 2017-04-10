@@ -1,0 +1,42 @@
+'generate ORIGEN f33 library
+=couple
+Fission Yield Library
+
+0$$ a3 80 21 0 33 e
+1$$ a2 1 a4 1 a18 238 e 1t
+9**
+ 13z 1.25 0.3 223z
+2t
+done
+end
+
+'ORIGEN calculation
+=origen
+case{
+    lib{ file="ft33f001" }
+    time{
+        t=[ 1e-6 1e-5 1e-4 1e-3 
+            1e-2 1e-1 1    1e1 
+            1e2  1e3  1e4  1e5 1e6]
+        units=SECONDS
+    }
+    flux=[4r 1.0e15 9r0]
+
+    mat{
+        iso[ u235=1 ]
+        units=GRAMS
+    }
+
+    save{
+        file="ft71f001"
+        steps=ALL
+    }
+}
+end
+
+'post-process Watts
+=opus
+  time=seconds
+  minposition=5
+  units=watts
+end
