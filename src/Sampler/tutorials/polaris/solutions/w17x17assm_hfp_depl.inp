@@ -1,28 +1,16 @@
 =polaris
-
+sys PWR
 lib "v7-56"
 
-sys PWR
+%geometry
 geom FA : ASSM 17 1.26 sym=SE
 hgap 0.04
-
-comp c310 : UOX 3.10
-
-mat FUEL.1 : c310    10.257
-mat GAP.1  : FILLGAS
-mat TUBE.1 : ZIRC4
-mat COOL.1 : WATER    0.723
-mat CLAD.1 : ZIRC4
-mat CLAD.2 : SS304
-mat BP.1   : B4C 
-
 pin 1 : 0.4096 0.418 0.475
       : FUEL   GAP   CLAD.1
 pin P : 0.214  0.231   0.241 0.427 0.437 0.484   0.561   0.602
-      : GAP    CLAD.2  GAP   BP.1  GAP   CLAD.2  COOL.1  TUBE
+      : GAP    CLAD.2  GAP   BP    GAP   CLAD.2  COOL.1  TUBE
 pin D : 0.559  0.605
       : COOL.1 TUBE
-
 pinmap
   D
   1 1
@@ -34,6 +22,7 @@ pinmap
   1 1 1 1 1 1 1 1
   1 1 1 1 1 1 1 1 1
 
+% define HFP state
 deplete FUEL=yes BP=yes
 
 % HFP
@@ -44,6 +33,20 @@ state FUEL : temp=900
 pow 40
 bu 1 2 5 10 20
 pow 0
-dt 0.1 0.2 0.4 0.8 1.6 3.2 6.4 12.8
+dt 0.1 0.2 0.4 0.8 1.6 3.2
+
+% special options
+opt PRINT xfile16=yes
+
+% compositions & materials
+comp c310 : UOX 3.10
+
+mat FUEL.1 : c310    10.257
+mat GAP.1  : FILLGAS
+mat TUBE.1 : ZIRC4
+mat COOL.1 : WATER    0.723
+mat CLAD.1 : ZIRC4
+mat CLAD.2 : SS304
+mat BP.1   : B4C
 
 end

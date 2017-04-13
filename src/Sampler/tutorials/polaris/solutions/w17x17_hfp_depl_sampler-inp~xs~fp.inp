@@ -17,12 +17,24 @@ end parameters
 'pin calculation case
 read case[pin]
     import="pin_hfp_depl.inp"
+    sequence=shell
+        mv "${OUTDIR}/${BASENAME}.f71" ft71f001
+    end sequence
 end case
 
 'assembly calculation case
 read case[assm]
    import="assm_hfp_depl.inp"
+    sequence=shell
+        mv "${OUTDIR}/${BASENAME}.f71" ft71f001
+    end sequence
 end case
+
+'save ORIGEN f71 files
+read save
+    file = "ft71f001"
+    name = "f71"
+end save
 
 
 '------------------------------------------------------------------------------
@@ -43,7 +55,7 @@ end variable
 read variable[moderator_density]
   distribution=uniform
   minimum=0.690
-  value=0.723
+  value=0.720
   maximum=0.750
   siren='polaris/state/[NAME="COOL"]/key_value/[key="dens"]/value'
   cases= pin assm end
@@ -77,6 +89,18 @@ end variable
 read response[inputs]
   type=variables
   data=system_boron fuel_temperature system_power moderator_density end
+end response
+
+read response[pin_nuc]
+    type=origen_nuclides
+    nuclides = pu239 xe135 gd155 end
+    step_from=1 step_to=16
+end response
+
+read response[assm_nuc]
+    type=origen_nuclides
+    nuclides = pu239 xe135 gd155 end
+    step_from=17 step_to=32
 end response
 
 end

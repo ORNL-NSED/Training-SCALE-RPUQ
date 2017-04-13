@@ -11,7 +11,6 @@ pin P : 0.214  0.231   0.241 0.427 0.437 0.484   0.561   0.602
       : GAP    CLAD.2  GAP   BP    GAP   CLAD.2  COOL.1  TUBE
 pin D : 0.559  0.605
       : COOL.1 TUBE
-
 pinmap
   D
   1 1

@@ -1,22 +1,13 @@
 =polaris
-
+sys PWR
 lib "v7-56"
 
-sys PWR
-
+% geometry
 geom FA : ASSM 1 1.26
-
-comp c310 : UOX 3.10
-
-mat FUEL.1 : c310   10.257
-mat COOL.1 : WATER   0.723
-
 pin 1 : 0.4096 0.418 0.475
       :   FUEL   GAP  CLAD
 
-opt PRINT xfile16=yes
-
-% HFP
+% define HFP state
 state COOL : boron=650 dens=0.723
 state ALL  : temp=565
 state FUEL : temp=900
@@ -24,6 +15,15 @@ state FUEL : temp=900
 pow 40
 bu 1 2 5 10 20
 pow 0
-dt 0.1 0.2 0.4 0.8 1.6 3.2 6.4 12.8
+dt 0.1 0.2 0.4 0.8 1.6 3.2
+
+% special options
+opt PRINT xfile16=yes
+
+% compositions & materials
+comp c310 : UOX 3.10
+
+mat FUEL.1 : c310   10.257
+mat COOL.1 : WATER   0.723
 
 end
