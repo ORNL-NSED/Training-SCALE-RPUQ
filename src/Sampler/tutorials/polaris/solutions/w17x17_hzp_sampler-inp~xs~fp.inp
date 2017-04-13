@@ -55,7 +55,8 @@ read variable[system_boron]
   minimum=1250
   value=1300
   maximum=1350
-  siren="/polaris/state[1]/key_value/value"
+  siren='polaris/state/[NAME="COOL"]/key_value/[key="boron"]/value'
+  cases= pin assm end
 end variable
 
 'siren to make HZP temperature a uniform variable
@@ -64,7 +65,8 @@ read variable[system_temperature]
   minimum=563
   value=565
   maximum=567
-  siren="/polaris/state[2]/key_value/value"
+  siren='polaris/state/[NAME="ALL"]/key_value/[key="temp"]/value'
+  cases= pin assm end
 end variable
 
 '------------------------------------------------------------------------------

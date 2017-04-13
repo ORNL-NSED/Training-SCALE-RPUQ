@@ -35,7 +35,8 @@ read variable[system_boron]
   minimum=600
   value=650
   maximum=700
-  siren="/polaris/state[1]/key_value/value"
+  siren='polaris/state/[NAME="COOL"]/key_value/[key="boron"]/value'
+  cases= pin assm end
 end variable
 
 'siren to make moderator density a uniform variable
@@ -44,7 +45,8 @@ read variable[moderator_density]
   minimum=0.690
   value=0.723
   maximum=0.750
-  siren="/polaris/state[1]/key_value/value"
+  siren='polaris/state/[NAME="COOL"]/key_value/[key="dens"]/value'
+  cases= pin assm end
 end variable
 
 'siren to make fuel temperature a uniform variable
@@ -53,7 +55,8 @@ read variable[fuel_temperature]
   minimum=800
   value=900
   maximum=1000
-  siren="/polaris/state[3]/key_value/value"
+  siren='polaris/state/[NAME="FUEL"]/key_value/[key="temp"]/value'
+  cases= pin assm end
 end variable
 
 'siren to make power a uniform variable
@@ -62,7 +65,8 @@ read variable[system_power]
   minimum=35
   value=40
   maximum=45
-  siren="/polaris/power/key_value/value"
+  siren='/polaris/power[1]/power-list[1]'
+  cases= pin assm end
 end variable
 
 '------------------------------------------------------------------------------
