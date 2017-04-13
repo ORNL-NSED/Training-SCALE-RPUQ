@@ -14,12 +14,12 @@ mat TUBE.1 : ZIRC4
 mat COOL.1 : WATER    0.723
 mat CLAD.1 : ZIRC4
 mat CLAD.2 : SS304
-mat CNTL.1 : AIC
+mat BP.1   : B4C 
 
 pin 1 : 0.4096 0.418 0.475
       : FUEL   GAP   CLAD.1
 pin P : 0.214  0.231   0.241 0.427 0.437 0.484   0.561   0.602
-      : GAP    CLAD.2  GAP   CNTL  GAP   CLAD.2  COOL.1  TUBE
+      : GAP    CLAD.2  GAP   BP.1  GAP   CLAD.2  COOL.1  TUBE
 pin D : 0.559  0.605
       : COOL.1 TUBE
 
@@ -33,6 +33,8 @@ pinmap
   P 1 1 P 1 1 1
   1 1 1 1 1 1 1 1
   1 1 1 1 1 1 1 1 1
+
+deplete FUEL=yes BP=yes
 
 % HFP
 state COOL : boron=650 dens=0.723

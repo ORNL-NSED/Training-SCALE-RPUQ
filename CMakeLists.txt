@@ -10,7 +10,10 @@ ENDIF()
 IF( "${N_SAMPLES}" STREQUAL "" )
     SET(N_SAMPLES 100)
 ENDIF()
-
+IF( "${N_THREADS}" STREQUAL "" )
+    INCLUDE( ProcessorCount )
+    ProcessorCount( N_THREADS )
+ENDIF()
 
 FILE(GLOB_RECURSE inputs RELATIVE "${CMAKE_SOURCE_DIR}" src/*.inp)
 FOREACH( input ${inputs} )
@@ -72,7 +75,7 @@ FOREACH( input ${inputs} )
             ADD_CUSTOM_COMMAND(
                 OUTPUT "${inpdir}/${b}.out"
                 DEPENDS "${inpdir}/${b}.inp"
-                COMMAND "${SCALERTE}" ARGS -m "${b}.inp"
+                COMMAND "${SCALERTE}" ARGS -m -I ${N_THREADS} "${b}.inp"
                 WORKING_DIRECTORY "${inpdir}"
             )
             ADD_CUSTOM_TARGET( "${b}" ALL DEPENDS "${inpdir}/${b}.out" )
