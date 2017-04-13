@@ -13,7 +13,7 @@ end parameters
 
 read case[c1]
 '
-'PASTE here uam_pb2_pin.mg_de.inp
+'PASTE here uam_pb2_pin-mg_de.inp
 'and wrap each sequence in sequence{}sequence
 '
 

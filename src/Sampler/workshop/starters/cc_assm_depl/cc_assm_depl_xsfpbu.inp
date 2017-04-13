@@ -1,7 +1,7 @@
 'hint: Do the cc_assm_depl_xsfp case first. Use siren to
 'define the uncertain powers without modifying the input.
 =shell
-cp "${INPDIR}/../../base_calcs/cc_assm_depl/cc_assm_depl.mg_de.inp" "my.inp"
+cp "${INPDIR}/../../base_calcs/cc_assm_depl/cc_assm_depl-mg_de.inp" "my.inp"
 end
 
 =sampler

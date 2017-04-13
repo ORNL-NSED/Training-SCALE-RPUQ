@@ -1,0 +1,26 @@
+=polaris
+
+lib "v7-56"
+
+sys PWR
+
+geom FA : ASSM 1 1.26
+
+comp c310 : UOX 3.10
+
+mat FUEL.1 : c310   10.257
+mat COOL.1 : WATER   0.723
+
+pin 1 : 0.4096 0.418 0.475
+      :   FUEL   GAP  CLAD
+
+opt PRINT xfile16=yes
+
+% HZP
+state COOL : boron=1300
+state ALL  : temp=565
+
+%pow 40
+%bu 1 2 5 10 20
+
+end

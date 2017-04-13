@@ -1,0 +1,153 @@
+=shell
+cp ${INPDIR}/w17x17pin_hzp.inp pin_hzp.inp
+cp ${INPDIR}/w17x17assm_hzp.inp assm_hzp.inp
+end
+
+=%sampler
+
+read parameters
+  n_samples = 2
+  perturb_xs = yes
+  perturb_yields = yes
+  force_run = no
+  run_cases = yes
+  library = "v7-56"
+end parameters
+
+'pin calculation case
+read case[pin]
+    import="pin_hzp.inp"
+    sequence=shell
+      grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' diff coeff ' | awk 'END{print}' | awk '{print "diff1 = ",$3}'
+      grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' diff coeff ' | awk 'END{print}' | awk '{print "diff2 = ",$3}'
+      grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' nu\*fission ' | awk 'END{print}' | awk '{print "nuf1 = ",$4}'
+      grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' nu\*fission ' | awk 'END{print}' | awk '{print "nuf2 = ",$4}'
+      grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' fission ' | awk 'END{print}' | awk '{print "fiss1 = ",$1}'
+      grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' fission ' | awk 'END{print}' | awk '{print "fiss2 = ",$1}'
+      grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' capture' | awk 'END{print}' | awk '{print "cap1 = ",$5}'
+      grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' capture' | awk 'END{print}' | awk '{print "cap2 = ",$5}'
+    end sequence
+end case
+
+'assembly calculation case
+read case[assm]
+   import="assm_hzp.inp"
+   sequence=shell
+     grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' diff coeff ' | awk 'END{print}' | awk '{print "diff1 = ",$3}'
+     grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' diff coeff ' | awk 'END{print}' | awk '{print "diff2 = ",$3}'
+     grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' nu\*fission ' | awk 'END{print}' | awk '{print "nuf1 = ",$4}'
+     grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' nu\*fission ' | awk 'END{print}' | awk '{print "nuf2 = ",$4}'
+     grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' fission ' | awk 'END{print}' | awk '{print "fiss1 = ",$1}'
+     grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' fission ' | awk 'END{print}' | awk '{print "fiss2 = ",$1}'
+     grep -A6 '  Energy group    1' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' capture' | awk 'END{print}' | awk '{print "cap1 = ",$5}'
+     grep -A6 '  Energy group    2' ${INPDIR}/${BASENAME}.t16 | grep -A1 ' capture' | awk 'END{print}' | awk '{print "cap2 = ",$5}'
+   end sequence
+end case
+
+
+'------------------------------------------------------------------------------
+'VARIABLES
+'------------------------------------------------------------------------------
+
+'siren to make boron ppm a uniform variable
+read variable[system_boron]
+  distribution=uniform
+  minimum=1250
+  value=1300
+  maximum=1350
+  siren="/polaris/state[1]/key_value/value"
+end variable
+
+'siren to make HZP temperature a uniform variable
+read variable[system_temperature]
+  distribution=uniform
+  minimum=563
+  value=565
+  maximum=567
+  siren="/polaris/state[2]/key_value/value"
+end variable
+
+'------------------------------------------------------------------------------
+'RESPONSES
+'------------------------------------------------------------------------------
+
+'eigenvalue
+read response[kinf]
+  type = grep
+  regexp = "k-eff = *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'diffusion coefficient in fast group
+read response[diff1]
+  type = grep
+  regexp = "diff1 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'diffusion coefficient in thermal group
+read response[diff2]
+  type = grep
+  regexp = "diff2 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'nu*fission in fast group
+read response[nuf1]
+  type = grep
+  regexp = "nuf1 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'nu*fission in thermal group
+read response[nuf2]
+  type = grep
+  regexp = "nuf2 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'fission in fast group
+read response[fiss1]
+  type = grep
+  regexp = "fiss1 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'fission in thermal group
+read response[fiss2]
+  type = grep
+  regexp = "fiss2 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'capture in fast group
+read response[cap1]
+  type = grep
+  regexp = "cap1 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'capture in thermal group
+read response[cap2]
+  type = grep
+  regexp = "cap2 = *:scale.number:"
+  regexp = "= *:scale.number:"
+  regexp = ":scale.number:"
+end response
+
+'echo sampled values for input parameters
+read response[inputs]
+  type=variables
+  data=system_boron system_temperature end
+end response
+
+end
+
+

@@ -1,0 +1,80 @@
+=shell
+cp ${INPDIR}/w17x17pin_hfp_depl.inp pin_hfp_depl.inp
+cp ${INPDIR}/w17x17assm_hfp_depl.inp assm_hfp_depl.inp
+end
+
+=%sampler
+
+read parameters
+  n_samples = 2
+  perturb_xs = yes
+  perturb_yields = yes
+  force_run = no
+  run_cases = yes
+  library = "v7-56"
+end parameters
+
+'pin calculation case
+read case[pin]
+    import="pin_hfp_depl.inp"
+end case
+
+'assembly calculation case
+read case[assm]
+   import="assm_hfp_depl.inp"
+end case
+
+
+'------------------------------------------------------------------------------
+'VARIABLES
+'------------------------------------------------------------------------------
+
+'siren to make boron ppm a uniform variable
+read variable[system_boron]
+  distribution=uniform
+  minimum=600
+  value=650
+  maximum=700
+  siren="/polaris/state[1]/key_value/value"
+end variable
+
+'siren to make moderator density a uniform variable
+read variable[moderator_density]
+  distribution=uniform
+  minimum=0.690
+  value=0.723
+  maximum=0.750
+  siren="/polaris/state[1]/key_value/value"
+end variable
+
+'siren to make fuel temperature a uniform variable
+read variable[fuel_temperature]
+  distribution=uniform
+  minimum=800
+  value=900
+  maximum=1000
+  siren="/polaris/state[3]/key_value/value"
+end variable
+
+'siren to make power a uniform variable
+read variable[system_power]
+  distribution=uniform
+  minimum=35
+  value=40
+  maximum=45
+  siren="/polaris/power/key_value/value"
+end variable
+
+'------------------------------------------------------------------------------
+'RESPONSES
+'------------------------------------------------------------------------------
+
+'echo sampled values for input parameters
+read response[inputs]
+  type=variables
+  data=system_boron fuel_temperature system_power moderator_density end
+end response
+
+end
+
+

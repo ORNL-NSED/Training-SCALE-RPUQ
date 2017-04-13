@@ -1,7 +1,7 @@
 'hint: Do the xs-only perturbation first. Adding fission
 'yield uncertainty is a one line addition in the parameters block.
 =shell
-cp "${INPDIR}/../../base_calcs/cc_assm_depl/cc_assm_depl.mg_de.inp" "my.inp"
+cp "${INPDIR}/../../base_calcs/cc_assm_depl/cc_assm_depl-mg_de.inp" "my.inp"
 end
 
 =sampler
