@@ -37,36 +37,34 @@ FOREACH( input ${inputs} )
         #directive to create two input files that have perturb_xs=yes/no
         #directive to create two input files that have fp=yes/no
         FOREACH( mod "xs" "fp" )
-            IF( "${basename}" MATCHES "~${mod}" )
-                SET(new_list)
-                FOREACH( b ${basename_list} )
+            SET(new_list)
+            FOREACH( b ${basename_list} )
+                IF( "${b}" MATCHES "~${mod}" )
                     STRING(REGEX REPLACE "~${mod}" "-${mod}" b1 ${b} )
                     STRING(REGEX REPLACE "~${mod}" "" b2 ${b} )
                     LIST(APPEND new_list ${b1} ${b2})
-                ENDFOREACH()
-                SET(basename_list ${new_list})
-            ENDIF()
+                ELSE()
+                    LIST(APPEND new_list ${b})
+                ENDIF()
+            ENDFOREACH()
+            SET(basename_list ${new_list})
         ENDFOREACH()
         #come out with a new list
 
         FOREACH( b ${basename_list} )
 
             #change perturb_xs if original basename has ~xs
-            IF( ${basename} MATCHES "~xs" )
-                IF( ${b} MATCHES "-xs" )
-                    STRING(REGEX REPLACE "perturb_xs *= *(yes|no)" "perturb_xs = yes" contents ${contents})
-                ELSE()
-                    STRING(REGEX REPLACE "perturb_xs *= *(yes|no)" "perturb_xs = no" contents ${contents})
-                ENDIF()
+            IF( ${b} MATCHES "-xs" )
+                STRING(REGEX REPLACE "perturb_xs *= *(yes|no)" "perturb_xs = yes" contents ${contents})
+            ELSE()
+                STRING(REGEX REPLACE "perturb_xs *= *(yes|no)" "perturb_xs = no" contents ${contents})
             ENDIF()
 
             #change perturb_yields if original basename has ~fp
-            IF( ${basename} MATCHES "~fp" )
-                IF( ${b} MATCHES "-fp" )
-                    STRING(REGEX REPLACE "perturb_yields *= *(yes|no)" "perturb_yields = yes" contents ${contents})
-                ELSE()
-                    STRING(REGEX REPLACE "perturb_yields *= *(yes|no)" "perturb_yields = no" contents ${contents})
-                ENDIF()
+            IF( ${b} MATCHES "-fp" )
+                STRING(REGEX REPLACE "perturb_yields *= *(yes|no)" "perturb_yields = yes" contents ${contents})
+            ELSE()
+                STRING(REGEX REPLACE "perturb_yields *= *(yes|no)" "perturb_yields = no" contents ${contents})
             ENDIF()
 
 
