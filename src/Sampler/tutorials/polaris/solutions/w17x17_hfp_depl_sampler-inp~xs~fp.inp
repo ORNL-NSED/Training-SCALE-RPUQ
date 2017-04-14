@@ -101,7 +101,7 @@ end response
 read response[grams]
     type = opus_plt
     ndataset = 0
-    nuclides = u238 pu239 total end
+    nuclides = pu239 xe135 gd155 end
 end response
 
 
