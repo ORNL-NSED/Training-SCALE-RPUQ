@@ -7,8 +7,8 @@ end
 
 read parameters
   n_samples = 2
-  perturb_xs = yes
-  perturb_yields = yes
+  perturb_xs = no
+  perturb_yields = no
   force_run = no
   run_cases = yes
   library = "v7-56"
@@ -18,7 +18,13 @@ end parameters
 read case[pin]
     import="pin_hfp_depl.inp"
     sequence=shell
-        mv "${OUTDIR}/${BASENAME}.f71" ft71f001
+        mv "${OUTDIR}/${BASENAME}.f71" f71
+    end sequence
+    sequence=opus
+        data="f71"
+        symnuc = pu239 xe135 gd155 end
+        minposition=25 maxposition=36
+        units = grams
     end sequence
 end case
 
@@ -26,15 +32,15 @@ end case
 read case[assm]
    import="assm_hfp_depl.inp"
     sequence=shell
-        mv "${OUTDIR}/${BASENAME}.f71" ft71f001
+        mv "${OUTDIR}/${BASENAME}.f71" f71
+    end sequence
+    sequence=opus
+        data="f71"
+        symnuc = pu239 xe135 gd155 end
+        minposition=973 maxposition=984
+        units = grams
     end sequence
 end case
-
-'save ORIGEN f71 files
-read save
-    file = "ft71f001"
-    name = "f71"
-end save
 
 
 '------------------------------------------------------------------------------
@@ -91,17 +97,13 @@ read response[inputs]
   data=system_boron fuel_temperature system_power moderator_density end
 end response
 
-read response[pin_nuc]
-    type=origen_nuclides
-    nuclides = pu239 xe135 gd155 end
-    step_from=1 step_to=16
+'opus plot response
+read response[grams]
+    type = opus_plt
+    ndataset = 0
+    nuclides = u238 pu239 total end
 end response
 
-read response[assm_nuc]
-    type=origen_nuclides
-    nuclides = pu239 xe135 gd155 end
-    step_from=17 step_to=32
-end response
 
 end
 

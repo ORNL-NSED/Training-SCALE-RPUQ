@@ -7,8 +7,8 @@ end
 
 read parameters
   n_samples = 2
-  perturb_xs = yes
-  perturb_yields = yes
+  perturb_xs = no
+  perturb_yields = no
   force_run = no
   run_cases = yes
   library = "v7-56"
