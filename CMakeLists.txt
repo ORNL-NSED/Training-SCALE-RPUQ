@@ -14,11 +14,13 @@ IF( "${N_THREADS}" STREQUAL "" )
     INCLUDE( ProcessorCount )
     ProcessorCount( N_THREADS )
 ENDIF()
-
+IF( "${DIR_MATCH}" STREQUAL "" )
+    SET(DIR_MATCH "/solutions")
+ENDIF()
 FILE(GLOB_RECURSE inputs RELATIVE "${CMAKE_SOURCE_DIR}" src/*.inp)
 FOREACH( input ${inputs} )
     GET_FILENAME_COMPONENT( dir "${input}" DIRECTORY )
-    IF( "${dir}" MATCHES "/solutions" OR "${dir}" MATCHES "/base_calcs" )
+    IF( "${dir}" MATCHES "${DIR_MATCH}" )
 
         #copy over input file
         GET_FILENAME_COMPONENT( file "${input}" NAME )
