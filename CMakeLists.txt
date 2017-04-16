@@ -26,9 +26,8 @@ FOREACH( input ${inputs} )
         GET_FILENAME_COMPONENT( file "${input}" NAME )
         GET_FILENAME_COMPONENT( basename "${file}" NAME_WE )
         SET( inpdir "${CMAKE_BINARY_DIR}/${dir}")
-        CONFIGURE_FILE("${input}" "${inpdir}/${basename}.inp" COPYONLY)
 
-        FILE(READ "${inpdir}/${basename}.inp" contents )
+        FILE(READ "${input}" contents )
         #replace N_SAMPLES
         STRING(REGEX REPLACE "n_samples *= *[0-9]+" "n_samples = ${N_SAMPLES}" contents ${contents})
 
@@ -49,6 +48,13 @@ FOREACH( input ${inputs} )
             ENDFOREACH()
             SET(basename_list ${new_list})
         ENDFOREACH()
+        SET(new_list)
+        FOREACH( b ${basename_list} )
+            IF( NOT "${b}" MATCHES "~" )
+                LIST(APPEND new_list ${b})
+            ENDIF()
+        ENDFOREACH()
+        SET(basename_list ${new_list})
         #come out with a new list
 
         FOREACH( b ${basename_list} )
