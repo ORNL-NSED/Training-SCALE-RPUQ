@@ -5,7 +5,8 @@ The purpose of this repository is to manage the inputs and outputs for the SCALE
 
 Here are the materials distributed by course.
 
-- 2017 OECD/NEA March 12-17, Paris [`2017NEA <https://github.com/wawiesel/Training-SCALE-RPUQ/releases/tag/2017NEA>`_]
+- 2017 M&C Workshop "Uncertainty Quantification in SCALE 6.2 for Depletion and Decay problems": April 16 in Jeju, Korea:  [`2017MnC <https://github.com/ORNL-NSED/Training-SCALE-RPUQ/releases/tag/2017MnC>`_]
+- 2017 OECD/NEA March 12-17 in Paris, France [`2017NEA <https://github.com/wawiesel/Training-SCALE-RPUQ/releases/tag/2017NEA>`_]
 
 Here are additional tricks that are necessary for certain versions of SCALE.
 
